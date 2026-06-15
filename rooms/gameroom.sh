@@ -1,5 +1,14 @@
 #!/bin/bash
 clear
+source ../lib/engine.sh
+
+ROOM_ID="gameroom"
+ROOM_NAME="Dinner Hall"
+EXITS=""
+EXITS_LOCKED=""
+
+init_room
+
 # Initialise the Title Art
 file1="../art/titleart.ben"
 while IFS= read -r line
@@ -8,52 +17,44 @@ do
 done <"$file1"
 echo
 
-# This room gives the player a typical poisoned apple style scenaro.
-# Just because something looks shiny and fun, doesn't make it any
-# less deadly.
-sleep 1
-echo "This room is small, but has a pretty sweet looking computer"
-echo "sat on a desk in the middle of it. Is that... YES!"
-echo "Steam is installed, and it looks like the entire library of"
-echo "games is installed! This is one epic gaming rig."
+# This is close to the endgame, but affords the player a last set of things to try and do.
+# Obviously if you use this framework to create a game of your own, you can extend this massively.
 echo
-echo "The only way out is east, back the way you came... but..."
-echo "shiny. Maybe it'd be rude NOT to sit down and game a little."
+sleep 1
+
+show_description() {
+    echo "You step through the door and into what looks like a scene from a movie."
+    echo
+    echo "There's a long table in front of you. Sat around it are several well-dressed"
+    echo "people, both men and women, eating a very elaborate looking dinner."
+    echo "Weird."
+    echo
+    echo "There appears to have been a place laid at the table for you."
+    echo
+    echo "A waiter brings out a tray and places it in front of you. Lifting the lid,"
+    echo "you find a weird rainbow coloured pill in front of you. Very 'Martix', you think"
+    echo "to yourself. What does this mean? Are you supposed to take the pill?"
+    echo "Is this some kind of test? And who ARE these people?!"
+}
+
+show_description
+echo
 echo
 echo "What would you like to do?"
 
 while true; do
     read -p "> " nsewuh
     case $nsewuh in
-        n ) echo "WALL EQUALS TRUE." ;;
-        s ) echo "Nope. Wall." ;;
-        w ) ./kroo2.sh
+        n ) echo "You get up and look around. Not much over here." ;;
+        s ) echo "You take a look at the decor of the room. It's pretty nice." ;;
+        e ) echo "There's a curtain - but no window behind it. How odd." ;;
+        w ) echo "WHO ARE THESE PEOPLE?!" ;;
+		u ) ./end.sh
             exit ;;
-        e ) echo "You were going to go east, then you took a wall to the face." ;;
-		u ) echo
-            echo "You sit and game. And game. And game. You forget about time,"
-            echo "and food, and people. You realise that you cannot get up. You can't"
-            echo "move. You are stuck to the chair."
-            echo
-            sleep 4
-            echo "Days go by. Weeks. You've played game after game, but..."
-            echo
-            echo "Your body is giving up. With your final breath you come to realise that"
-            echo "you cannot live on gamerpoints alone. You close your eyes for the last time."
-            sleep 4
-            echo
-            echo
-            echo "YOU ARE DEAD."
-            echo
-            read -p "Press [ENTER] to try again..."
-            ./mainroom.sh
-            exit
-
-        ;;
-		h ) echo "You hug the computer. Nerd." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		h ) echo "You hug the person next to you. He feels cold, and doesn't move." ;;
+        m|map ) show_map ;;
+        l|look ) show_description ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, m and l.";;
     esac
 done
-
-esac
 exit
