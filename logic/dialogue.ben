@@ -1,0 +1,7 @@
+# BashVenture dialogue state - one key=value per line.
+# Managed by rooms/dialogue.sh (dialogue_get / dialogue_set).
+# This file is copied per-player by adventure.sh, so each player has their own.
+# Known keys:
+#   grue_npc_met=yes|no   - has the player spoken to the grue-room captive?
+#   item_lantern=yes      - does the player carry the lantern?
+# An absent key simply means its default (unset / "no").

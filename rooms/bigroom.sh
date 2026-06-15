@@ -52,5 +52,4 @@ while true; do
     esac
 done
 
-esac
 exit

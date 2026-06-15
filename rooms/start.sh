@@ -8,6 +8,10 @@ clear
 
 sed -i='' 's/on/off/' ../logic/leverlogic.ben
 
+# Reset NPC dialogue state too, so a fresh game starts with no remembered talks.
+source ./dialogue.sh
+dialogue_reset
+
 # Who doen't love ASCII text, right?
 # Next up, let's initialise the Title Art
 file1="../art/titleart.ben"
@@ -67,5 +71,4 @@ while true; do
     esac
 done
 
-esac
 exit
