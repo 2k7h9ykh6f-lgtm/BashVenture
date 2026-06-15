@@ -1,4 +1,5 @@
 #!/bin/bash
+source ../lib/common.sh
 clear
 
 # This is a repeat of the opening room in the start.sh file - if the player
@@ -38,7 +39,7 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) handle_common "$nsewuh" "mainroom.sh" || echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save, quit and help.";;
     esac
 done
 

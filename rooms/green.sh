@@ -1,4 +1,6 @@
 #!/bin/bash
+source ../lib/common.sh
+
 clear
 # Initialise the Title Art
 file1="../art/titleart.ben"
@@ -30,7 +32,7 @@ while true; do
         w ) echo "You attempt to go west, but ALL YOU SEE IS GREEN." ;;
 		u ) echo "You think about 'using' green, but realise it's not legal in this country." ;;
 		h ) echo "You curl yourself up into a ball and rock back and forth." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) handle_common "$nsewuh" "green.sh" || echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save, quit and help.";;
     esac
 done
 

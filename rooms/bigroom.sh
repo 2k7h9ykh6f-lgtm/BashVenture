@@ -1,4 +1,6 @@
 #!/bin/bash
+source ../lib/common.sh
+
 clear
 # Initialise the Title Art
 file1="../art/titleart.ben"
@@ -48,7 +50,7 @@ while true; do
 		u ) ./end.sh
             exit ;;
 		h ) echo "You hug the person next to you. He feels cold, and doesn't move." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) handle_common "$nsewuh" "bigroom.sh" || echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save, quit and help.";;
     esac
 done
 

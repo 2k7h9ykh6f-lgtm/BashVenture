@@ -1,4 +1,5 @@
 #!/bin/bash
+source ../lib/common.sh
 clear
 # Initialise the Title Art
 file1="titleart.ben"
@@ -32,7 +33,7 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "After hugging that cat you aren't sure you should try to hug yourself again." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) handle_common "$nsewuh" "kroo2.sh" || echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save, quit and help.";;
     esac
 done
 

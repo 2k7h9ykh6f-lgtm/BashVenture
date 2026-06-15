@@ -1,4 +1,5 @@
 #!/bin/bash
+source ../lib/common.sh
 clear
 # Initialise the Title Art
 file1="../art/titleart.ben"

@@ -1,7 +1,9 @@
 #!/bin/bash
+source ../lib/common.sh
 clear
 
-# This is the endgame. This file does nothing but give you the final bit of storyline.
+# Delete any save file - the game is over
+delete_save
 # Use (over-use) of 'sleep' is for dramatic effect - play around with it, see how it reads.
 
 # Let's reset the lever, now that we're done with it.
