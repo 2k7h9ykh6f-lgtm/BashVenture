@@ -19,6 +19,7 @@ cp -r rooms $newplayer/rooms
 cp -r art $newplayer/art
 cp -r script $newplayer/script
 cp -r logic $newplayer/logic
+cp -r lib $newplayer/lib
 fi
 
 echo "Loading..."

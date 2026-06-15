@@ -24,23 +24,31 @@ echo "You can just about see doors to the north, east, south and west."
 echo
 echo "What would you like to do?"
 
-# And the room logic once again.
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) ./white.sh
-            exit ;;
-        s ) ./brown.sh
-             exit ;;
-        e ) ./red.sh 
-            exit ;;
-        w ) ./green.sh
-            exit ;;
-		u ) echo "There's nothing you can use right here." ;;
-		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
-    esac
-done
+# Source the shared command library
+source ../lib/commands.sh
 
-esac
+# Room-specific command handler
+handle_cmd() {
+    case "$1" in
+        north) ./white.sh; exit ;;
+        south) ./brown.sh; exit ;;
+        east)  ./red.sh; exit ;;
+        west)  ./green.sh; exit ;;
+        use)   echo "There's nothing you can use right here." ;;
+        hug)   echo "You give yourself a quick hug. It's not very satisfying." ;;
+        look)
+            echo "You are in a large room. Doors lead north, east, south and west."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
+    esac
+}
+
+# Start the command loop
+cmd_loop
+
 exit

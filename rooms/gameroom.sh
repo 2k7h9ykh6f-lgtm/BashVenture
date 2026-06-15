@@ -22,15 +22,18 @@ echo "shiny. Maybe it'd be rude NOT to sit down and game a little."
 echo
 echo "What would you like to do?"
 
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) echo "WALL EQUALS TRUE." ;;
-        s ) echo "Nope. Wall." ;;
-        w ) ./kroo2.sh
-            exit ;;
-        e ) echo "You were going to go east, then you took a wall to the face." ;;
-		u ) echo
+# Source the shared command library
+source ../lib/commands.sh
+
+# Room-specific command handler
+handle_cmd() {
+    case "$1" in
+        north) echo "WALL EQUALS TRUE." ;;
+        south) echo "Nope. Wall." ;;
+        west)  ./kroo2.sh; exit ;;
+        east)  echo "You were going to go east, then you took a wall to the face." ;;
+        use)
+            echo
             echo "You sit and game. And game. And game. You forget about time,"
             echo "and food, and people. You realise that you cannot get up. You can't"
             echo "move. You are stuck to the chair."
@@ -48,12 +51,22 @@ while true; do
             read -p "Press [ENTER] to try again..."
             ./mainroom.sh
             exit
-
-        ;;
-		h ) echo "You hug the computer. Nerd." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+            ;;
+        hug)   echo "You hug the computer. Nerd." ;;
+        look)
+            echo "A small room with an epic gaming rig. Steam is installed!"
+            echo "The only way out is to the west."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
     esac
-done
+}
 
-esac
+# Start the command loop
+cmd_loop
+
 exit

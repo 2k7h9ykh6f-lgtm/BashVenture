@@ -4,11 +4,11 @@ clear
 file1="../art/titleart.ben"
 while IFS= read -r line
 do
-    echo "$line"
+	echo "$line"
 done <"$file1"
 echo
 
-# Set up the script for this room. It's a simple one!
+#Setting up the room...
 sleep 1
 echo "You're in a room that has an odd red glow to it."
 echo "Bookcases line the walls - dusty volumes with titles you"
@@ -19,20 +19,32 @@ echo "The only exit is to the west, back in the direction you came."
 echo
 echo "What would you like to do?"
 
-# And the choices go here.
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) echo "Face, meet wall. Wall, meet Face." ;;
-        s ) echo "You can't walk through walls." ;;
-        e ) echo "Nothing but wall here." ;;
-        w ) ./mainroom.sh
-            exit ;;
-		u ) echo "You sit in the comfortable chair. It's like sitting on a cloud." ;;
-		h ) echo "You give yourself a hug, hoping that the books won't judge you." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
-    esac
-done
+# Source the shared command library
+source ../lib/commands.sh
 
-esac
+# Room-specific command handler
+handle_cmd() {
+    case "$1" in
+        north) echo "Face, meet wall. Wall, meet Face." ;;
+        south) echo "You can't walk through walls." ;;
+        east)  echo "Nothing but wall here." ;;
+        west)  ./mainroom.sh; exit ;;
+        use)   echo "You sit in the comfortable chair. It's like sitting on a cloud." ;;
+        hug)   echo "You give yourself a hug, hoping that the books won't judge you." ;;
+        look)
+            echo "A room with an odd red glow, dusty bookcases, and a comfortable chair."
+            echo "The only exit is to the west."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
+    esac
+}
+
+# Start the command loop
+cmd_loop
+
 exit

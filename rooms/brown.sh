@@ -24,36 +24,47 @@ leverstate=`cat ../logic/leverlogic.ben`
                 echo "The last time you were in this room, you turned the lever on. It's still on."
             else
                 echo "It looks like it's in the off position."
-            fi 
+            fi
 echo
 echo "The only exit is north, back the way you came."
 echo
 echo "What would you like to do?"
 
-# In this set of actons lies the logic switch used later in the game.
-# You have to set this switch to reach the endgame.
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) ./mainroom.sh 
-            exit ;;
-        s ) echo "You attempt to walk through the wall. You fail." ;;
-        e ) echo "Right, let me explain this whole 'wall' thing to you..." ;;
-        w ) echo "Seriously? Though the wall? Sorry, I can't do that." ;;
-		u ) leverstate=`cat ../logic/leverlogic.ben`
+# Source the shared command library
+source ../lib/commands.sh
+
+# Room-specific command handler
+# Note: the 'use' command toggles the lever — this is the key game logic switch.
+handle_cmd() {
+    case "$1" in
+        north) ./mainroom.sh; exit ;;
+        south) echo "You attempt to walk through the wall. You fail." ;;
+        east)  echo "Right, let me explain this whole 'wall' thing to you..." ;;
+        west)  echo "Seriously? Though the wall? Sorry, I can't do that." ;;
+        use)
+            leverstate=`cat ../logic/leverlogic.ben`
             if [ "$leverstate" = "on" ]; then
                 echo "Having already turned it on, you try to turn it off. And fail."
             else
                 sed -i='' 's/off/on/' ../logic/leverlogic.ben
                 echo "You push the lever to 'on', and hear a humming start elsewhere in the building."
-            fi 
-        ;;
-
-
-		h ) echo "You hug yourself, and hope nobody is watching." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+            fi
+            ;;
+        hug)   echo "You hug yourself, and hope nobody is watching." ;;
+        look)
+            echo "A dingy room that smells of cabbage. There is a lever on the wall."
+            echo "The only exit is north."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
     esac
-done
+}
 
-esac
+# Start the command loop
+cmd_loop
+
 exit

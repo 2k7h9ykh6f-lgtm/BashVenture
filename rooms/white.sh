@@ -25,35 +25,48 @@ leverstate=`cat ../logic/leverlogic.ben`
             else
                 echo "There's a delecately carved statue at the end of the room."
                 echo "It's a kitten, hewn from beautiful white marble."
-            fi 
+            fi
 
 echo
 echo "The only exit is south, back the way you came."
 echo
 echo "What would you like to do?"
 
-# Now lets capture this room's actions. Note that here, the actions change depending on whether or not
-# the lever is on or off. If it's on, you go elsewhere. If it's off, you don't. 
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) echo "Somehow you think walls don't apply to you. They do." ;;
-        s ) ./mainroom.sh
-            exit ;;
-        e ) echo "No can do. There's a wall there." ;;
-        w ) echo "Seriously? Though the wall? Sorry, I can't do that." ;;
-		u ) echo "You try to use the statue. It feels weird, so you stop." ;;
-		h ) leverstate=`cat ../logic/leverlogic.ben`
+# Source the shared command library
+source ../lib/commands.sh
+
+# Room-specific command handler
+# Note: hug action changes depending on whether the lever is on or off.
+handle_cmd() {
+    case "$1" in
+        north) echo "Somehow you think walls don't apply to you. They do." ;;
+        south) ./mainroom.sh; exit ;;
+        east)  echo "No can do. There's a wall there." ;;
+        west)  echo "Seriously? Though the wall? Sorry, I can't do that." ;;
+        use)   echo "You try to use the statue. It feels weird, so you stop." ;;
+        hug)
+            leverstate=`cat ../logic/leverlogic.ben`
             if [ "$leverstate" = "on" ]; then
                 ./kroo.sh
                 exit
             else
                 echo "You hug the statue. It seems to vibrate a little. Weird."
-            fi 
+            fi
             ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look)
+            echo "A bright white room with a delicately carved marble kitten statue."
+            echo "The only exit is south."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
     esac
-done
+}
 
-esac
+# Start the command loop
+cmd_loop
+
 exit

@@ -4,7 +4,7 @@ clear
 file1="../art/titleart.ben"
 while IFS= read -r line
 do
-    echo "$line"
+	echo "$line"
 done <"$file1"
 echo
 
@@ -19,20 +19,31 @@ echo "It's getting to you. Such pain. Is there a door? Who knows."
 echo
 echo "What would you like to do?"
 
-# And here's what you could have won... 
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) echo "The green is a bit more intense over here. Oops." ;;
-        s ) echo "Such green. Much bad. Go back. SCHTAP." ;;
-        e ) ./mainroom.sh
-            exit ;;
-        w ) echo "You attempt to go west, but ALL YOU SEE IS GREEN." ;;
-		u ) echo "You think about 'using' green, but realise it's not legal in this country." ;;
-		h ) echo "You curl yourself up into a ball and rock back and forth." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
-    esac
-done
+# Source the shared command library
+source ../lib/commands.sh
 
-esac
+# Room-specific command handler
+handle_cmd() {
+    case "$1" in
+        north) echo "The green is a bit more intense over here. Oops." ;;
+        south) echo "Such green. Much bad. Go back. SCHTAP." ;;
+        east)  ./mainroom.sh; exit ;;
+        west)  echo "You attempt to go west, but ALL YOU SEE IS GREEN." ;;
+        use)   echo "You think about 'using' green, but realise it's not legal in this country." ;;
+        hug)   echo "You curl yourself up into a ball and rock back and forth." ;;
+        look)
+            echo "An intensely green room. The only exit you can see is to the east."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
+    esac
+}
+
+# Start the command loop
+cmd_loop
+
 exit

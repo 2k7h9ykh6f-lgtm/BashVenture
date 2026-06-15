@@ -38,19 +38,31 @@ sleep 5
 echo
 echo "What would you like to do?"
 
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) echo "You get up and look around. Not much over here." ;;
-        s ) echo "You take a look at the decor of the room. It's pretty nice." ;;
-        e ) echo "There's a curtain - but no window behind it. How odd." ;;
-        w ) echo "WHO ARE THESE PEOPLE?!" ;;
-		u ) ./end.sh
-            exit ;;
-		h ) echo "You hug the person next to you. He feels cold, and doesn't move." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
-    esac
-done
+# Source the shared command library
+source ../lib/commands.sh
 
-esac
+# Room-specific command handler
+handle_cmd() {
+    case "$1" in
+        north) echo "You get up and look around. Not much over here." ;;
+        south) echo "You take a look at the decor of the room. It's pretty nice." ;;
+        east)  echo "There's a curtain - but no window behind it. How odd." ;;
+        west)  echo "WHO ARE THESE PEOPLE?!" ;;
+        use)   ./end.sh; exit ;;
+        hug)   echo "You hug the person next to you. He feels cold, and doesn't move." ;;
+        look)
+            echo "An elaborate dinner scene with well-dressed guests and a rainbow pill on your plate."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
+    esac
+}
+
+# Start the command loop
+cmd_loop
+
 exit

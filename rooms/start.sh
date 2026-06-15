@@ -1,5 +1,4 @@
 #!/bin/bash
-
 clear
 
 # Logic in the game is stored in .ben files. This sample has just one 'logic' file.
@@ -49,23 +48,31 @@ echo "It's kinda cold, and you're hungry."
 echo
 echo "What would you like to do?"
 
-# Now we wait for their response - and send them somewhere accordingly.
-while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
-        n ) ./white.sh 
-            exit ;;       # These lines will take the player to a new room - a new script file.
-        s ) ./brown.sh 
-            exit ;;       # Be sure to include 'exit' otherwise the game won't quit properly!
-        e ) ./red.sh
-        	exit ;;
-        w ) ./green.sh
-        	exit ;;
-		u ) echo "There's nothing you can use right here." ;;     # Something to say? You can also just echo.
-		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
-    esac
-done
+# Source the shared command library
+source ../lib/commands.sh
 
-esac
+# Room-specific command handler
+handle_cmd() {
+    case "$1" in
+        north) ./white.sh; exit ;;
+        south) ./brown.sh; exit ;;
+        east)  ./red.sh; exit ;;
+        west)  ./green.sh; exit ;;
+        use)   echo "There's nothing you can use right here." ;;
+        hug)   echo "You give yourself a quick hug. It's not very satisfying." ;;
+        look)
+            echo "You are in a large room. Doors lead north, east, south and west."
+            ;;
+        inventory)
+            echo "You check your pockets. Nothing but lint."
+            ;;
+        *)
+            echo "I don't understand that. Available commands: $(cmd_available)"
+            ;;
+    esac
+}
+
+# Start the command loop
+cmd_loop
+
 exit
