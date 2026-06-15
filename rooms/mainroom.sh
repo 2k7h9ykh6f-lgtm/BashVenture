@@ -25,9 +25,12 @@ echo
 echo "What would you like to do?"
 
 # And the room logic once again.
+source ../lib/commands.sh
+avail="go north (n), south (s), east (e) or west (w); use (u) or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) ./white.sh
             exit ;;
         s ) ./brown.sh
@@ -38,9 +41,11 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit

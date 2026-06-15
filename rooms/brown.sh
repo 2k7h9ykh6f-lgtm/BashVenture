@@ -32,9 +32,12 @@ echo "What would you like to do?"
 
 # In this set of actons lies the logic switch used later in the game.
 # You have to set this switch to reach the endgame.
+source ../lib/commands.sh
+avail="go north (n); use (u) or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) ./mainroom.sh 
             exit ;;
         s ) echo "You attempt to walk through the wall. You fail." ;;
@@ -51,9 +54,11 @@ while true; do
 
 
 		h ) echo "You hug yourself, and hope nobody is watching." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit

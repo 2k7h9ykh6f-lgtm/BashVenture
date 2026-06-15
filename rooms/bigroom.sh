@@ -38,9 +38,12 @@ sleep 5
 echo
 echo "What would you like to do?"
 
+source ../lib/commands.sh
+avail="use (u) what's in front of you; or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) echo "You get up and look around. Not much over here." ;;
         s ) echo "You take a look at the decor of the room. It's pretty nice." ;;
         e ) echo "There's a curtain - but no window behind it. How odd." ;;
@@ -48,9 +51,11 @@ while true; do
 		u ) ./end.sh
             exit ;;
 		h ) echo "You hug the person next to you. He feels cold, and doesn't move." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit

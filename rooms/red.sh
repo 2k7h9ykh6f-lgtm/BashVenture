@@ -20,9 +20,12 @@ echo
 echo "What would you like to do?"
 
 # And the choices go here.
+source ../lib/commands.sh
+avail="go west (w); use (u) or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) echo "Face, meet wall. Wall, meet Face." ;;
         s ) echo "You can't walk through walls." ;;
         e ) echo "Nothing but wall here." ;;
@@ -30,9 +33,11 @@ while true; do
             exit ;;
 		u ) echo "You sit in the comfortable chair. It's like sitting on a cloud." ;;
 		h ) echo "You give yourself a hug, hoping that the books won't judge you." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit

@@ -20,9 +20,12 @@ echo "What would you like to do?"
 
 # Imma let you finish, but here's the room choices.
 
+source ../lib/commands.sh
+avail="go south (s), east (e) or west (w); use (u) or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) echo "You faceplant the wall. Idiot." ;;
         s ) ./bigroom.sh
             exit ;;
@@ -32,9 +35,11 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "After hugging that cat you aren't sure you should try to hug yourself again." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit

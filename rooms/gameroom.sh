@@ -22,9 +22,12 @@ echo "shiny. Maybe it'd be rude NOT to sit down and game a little."
 echo
 echo "What would you like to do?"
 
+source ../lib/commands.sh
+avail="head back the way you came (w); use (u) or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) echo "WALL EQUALS TRUE." ;;
         s ) echo "Nope. Wall." ;;
         w ) ./kroo2.sh
@@ -51,9 +54,11 @@ while true; do
 
         ;;
 		h ) echo "You hug the computer. Nerd." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit

@@ -34,9 +34,12 @@ echo "What would you like to do?"
 
 # Now lets capture this room's actions. Note that here, the actions change depending on whether or not
 # the lever is on or off. If it's on, you go elsewhere. If it's off, you don't. 
+source ../lib/commands.sh
+avail="go south (s); use (u) or hug (h)"
+
 while true; do
-    read -p "> " nsewuh
-    case $nsewuh in
+    read -p "> " input
+    case "$(cmd_normalize "$input")" in
         n ) echo "Somehow you think walls don't apply to you. They do." ;;
         s ) ./mainroom.sh
             exit ;;
@@ -51,9 +54,11 @@ while true; do
                 echo "You hug the statue. It seems to vibrate a little. Weird."
             fi 
             ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        look )      cmd_look "$avail" ;;
+        inventory ) cmd_inventory ;;
+        help )      cmd_help "$avail" ;;
+        quit )      cmd_quit ;;
+        * )         cmd_unknown "$avail" ;;
     esac
 done
-
-esac
 exit
