@@ -1,6 +1,15 @@
 #!/bin/bash
 clear
 
+# --- Room metadata for the map / look commands ---
+ROOM_ID="mainroom"
+ROOM_NAME="The Main Room"
+EXITS="n:white s:brown e:red w:green"
+
+# Load shared map / look helpers and record that we've been here.
+. ./maplib.sh
+bv_record_visit
+
 # This is a repeat of the opening room in the start.sh file - if the player
 # wants to go back to the main room, this saves going through the whole
 # start script over again.
@@ -14,15 +23,18 @@ done <"$file1"
 echo
 
 # Shakesphere wrote this, honest.
+describe() {
+    echo "You are back in the room you first woke up in."
+    echo "It's huge. You can't really fathom how large, but it took"
+    echo "long enough to get from that last room back to the middle of"
+    echo "this one. You wonder how you got here, and who is responsible."
+    echo
+    echo "You can just about see doors to the north, east, south and west."
+    echo
+    echo "What would you like to do?"
+}
 sleep 1
-echo "You are back in the room you first woke up in."
-echo "It's huge. You can't really fathom how large, but it took"
-echo "long enough to get from that last room back to the middle of"
-echo "this one. You wonder how you got here, and who is responsible."
-echo
-echo "You can just about see doors to the north, east, south and west."
-echo
-echo "What would you like to do?"
+describe
 
 # And the room logic once again.
 while true; do
@@ -38,9 +50,10 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        m | map ) bv_show_map ;;
+        l | look ) bv_show_look ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, plus m (map) and l (look).";;
     esac
 done
 
-esac
 exit

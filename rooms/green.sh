@@ -1,5 +1,15 @@
 #!/bin/bash
 clear
+
+# --- Room metadata for the map / look commands ---
+ROOM_ID="green"
+ROOM_NAME="The Green Room"
+EXITS="e:mainroom"
+
+# Load shared map / look helpers and record that we've been here.
+. ./maplib.sh
+bv_record_visit
+
 # Initialise the Title Art
 file1="../art/titleart.ben"
 while IFS= read -r line
@@ -9,15 +19,18 @@ done <"$file1"
 echo
 
 # Everybody clap your hands. I mean, here is the script.
+describe() {
+    echo "You're off to see the wizard. Well, maybe not - but this"
+    echo "room is so green you might as well be in Emerald City."
+    echo "Seriously. Think of the greenest thing you've ever seen,"
+    echo "then add another suitcase full of green. It's that bad."
+    echo
+    echo "It's getting to you. Such pain. Is there a door? Who knows."
+    echo
+    echo "What would you like to do?"
+}
 sleep 1
-echo "You're off to see the wizard. Well, maybe not - but this"
-echo "room is so green you might as well be in Emerald City."
-echo "Seriously. Think of the greenest thing you've ever seen,"
-echo "then add another suitcase full of green. It's that bad."
-echo
-echo "It's getting to you. Such pain. Is there a door? Who knows."
-echo
-echo "What would you like to do?"
+describe
 
 # And here's what you could have won... 
 while true; do
@@ -30,9 +43,10 @@ while true; do
         w ) echo "You attempt to go west, but ALL YOU SEE IS GREEN." ;;
 		u ) echo "You think about 'using' green, but realise it's not legal in this country." ;;
 		h ) echo "You curl yourself up into a ball and rock back and forth." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        m | map ) bv_show_map ;;
+        l | look ) bv_show_look ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, plus m (map) and l (look).";;
     esac
 done
 
-esac
 exit

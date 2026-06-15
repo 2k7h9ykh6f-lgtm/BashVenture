@@ -42,11 +42,26 @@ BashVenture - or any game you create with it - is a simple set of bash script fi
 
 Games can also have logic with various degrees of complexity, from a simple set of switches and levers (as in the demo) right through to complex codebreaking or secret-sharing. In BashVenture, logic is all file-based - when you flick a switch, for example, an entry in the corresponding logic file is changed. This means logic states transcend rooms and player death - you can reset logic as and when you want to, rather than it being tied tod a specific room or area, or lifetime if you're the kind of player that dies a lot.
 
-A player makes their way through the game by issuing commands. The default commants are north, south, east, west, use and hug. Because hugging is better than shooting. The user decides what course of action to take by typing in n, s, e, w, u or h respectively. You can customise this completely by adding your own commands.
+A player makes their way through the game by issuing commands. The default commants are north, south, east, west, use and hug. Because hugging is better than shooting. The user decides what course of action to take by typing in n, s, e, w, u or h respectively. There are also two commands to help you find your way: type m (or map) to see where you are, the rooms you've already visited and the exits you can take, and l (or look) to read the description of your current room again without moving. You can customise this completely by adding your own commands.
 
 There's an introduction and a bit of an endgame - and some baddies and things that can kill you along the way. I strongly suggest that, before forking and trying to write a game of your own, you play the demo and get a feel for how the gameplay mechanics work.
 
 The magic of a good adventure game is in the storytelling! Script well, test often, and don't over-complicate things.
+
+
+
+Map & current location
+----------------------
+
+So that players never feel lost, BashVenture keeps track of where they've been. Typing **m** (or **map**) at any prompt shows the player's current location, the rooms they've already visited, and the exits leading out of the room they're in. Typing **l** (or **look**) re-displays the current room's description without moving.
+
+To make this work, each interactive room file declares three pieces of metadata near the top, just after the `clear`:
+
+- `ROOM_ID` - a short, stable id for the location (e.g. `white`).
+- `ROOM_NAME` - the friendly name shown on the map (e.g. `The White Room`).
+- `EXITS` - a space-separated list of `key:dest[:gate]` entries. `key` is the command that leaves the room (n/s/e/w/u/h), `dest` is the `ROOM_ID` it leads to, and the optional `gate` marks an exit that stays shut until some logic is satisfied. The demo uses one gate, `lever`, which reads the same `logic/leverlogic.ben` switch the rest of the game uses.
+
+The rooms a player has seen are recorded in `state/visited`. In multi-user mode this file lives inside that player's own temporary game directory (the same per-player copy that gets removed when they leave), so one player's map never leaks into another's. The map only names a place once you've actually been there: an exit to somewhere you haven't explored shows as `??? (unexplored)`, and an exit you can't pass yet shows as `[locked]`. That way the map helps you navigate without spoiling the secret rooms - or the death traps - waiting ahead.
 
 
 
