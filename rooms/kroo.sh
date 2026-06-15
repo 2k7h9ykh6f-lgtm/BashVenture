@@ -42,7 +42,7 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "After hugging that cat you aren't sure you should try to hug yourself again." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and t.";;
     esac
 done
 
