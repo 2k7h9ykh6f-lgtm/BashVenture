@@ -1,4 +1,5 @@
 #!/bin/bash
+. "$(dirname "$0")/common.sh"
 clear
 # Initialise the Title Art
 file1="../art/titleart.ben"
@@ -22,6 +23,7 @@ echo "What would you like to do?"
 # And the choices go here.
 while true; do
     read -p "> " nsewuh
+    bv_global "$nsewuh" && continue
     case $nsewuh in
         n ) echo "Face, meet wall. Wall, meet Face." ;;
         s ) echo "You can't walk through walls." ;;
@@ -30,9 +32,8 @@ while true; do
             exit ;;
 		u ) echo "You sit in the comfortable chair. It's like sitting on a cloud." ;;
 		h ) echo "You give yourself a hug, hoping that the books won't judge you." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save and quit.";;
     esac
 done
 
-esac
 exit

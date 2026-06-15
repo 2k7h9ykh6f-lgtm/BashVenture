@@ -1,4 +1,5 @@
 #!/bin/bash
+. "$(dirname "$0")/common.sh"
 clear
 # Initialise the Title Art
 file1="../art/titleart.ben"
@@ -36,6 +37,7 @@ echo "What would you like to do?"
 # the lever is on or off. If it's on, you go elsewhere. If it's off, you don't. 
 while true; do
     read -p "> " nsewuh
+    bv_global "$nsewuh" && continue
     case $nsewuh in
         n ) echo "Somehow you think walls don't apply to you. They do." ;;
         s ) ./mainroom.sh
@@ -51,9 +53,8 @@ while true; do
                 echo "You hug the statue. It seems to vibrate a little. Weird."
             fi 
             ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save and quit.";;
     esac
 done
 
-esac
 exit

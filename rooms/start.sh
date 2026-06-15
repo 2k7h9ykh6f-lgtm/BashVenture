@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Pull in the shared save/load helpers (bv_global, bv_save, ...).
+. "$(dirname "$0")/common.sh"
+
 clear
 
 # Logic in the game is stored in .ben files. This sample has just one 'logic' file.
@@ -52,8 +55,9 @@ echo "What would you like to do?"
 # Now we wait for their response - and send them somewhere accordingly.
 while true; do
     read -p "> " nsewuh
+    bv_global "$nsewuh" && continue
     case $nsewuh in
-        n ) ./white.sh 
+        n ) ./white.sh
             exit ;;       # These lines will take the player to a new room - a new script file.
         s ) ./brown.sh 
             exit ;;       # Be sure to include 'exit' otherwise the game won't quit properly!
@@ -63,9 +67,8 @@ while true; do
         	exit ;;
 		u ) echo "There's nothing you can use right here." ;;     # Something to say? You can also just echo.
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save and quit.";;
     esac
 done
 
-esac
 exit

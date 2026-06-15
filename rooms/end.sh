@@ -1,4 +1,5 @@
 #!/bin/bash
+. "$(dirname "$0")/common.sh"
 clear
 
 # This is the endgame. This file does nothing but give you the final bit of storyline.
@@ -6,6 +7,10 @@ clear
 
 # Let's reset the lever, now that we're done with it.
 sed -i='' 's/on/off/' ../logic/leverlogic.ben
+
+# The adventure is over, so drop any save - a finished game shouldn't be
+# offered up later as "continue where you left off".
+bv_clear_save
 
 # Initialise the Title Art
 file1="../art/titleart.ben"

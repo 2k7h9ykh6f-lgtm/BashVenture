@@ -1,4 +1,5 @@
 #!/bin/bash
+. "$(dirname "$0")/common.sh"
 clear
 # Initialise the Title Art
 file1="../art/titleart.ben"
@@ -22,6 +23,7 @@ echo "What would you like to do?"
 # And here's what you could have won... 
 while true; do
     read -p "> " nsewuh
+    bv_global "$nsewuh" && continue
     case $nsewuh in
         n ) echo "The green is a bit more intense over here. Oops." ;;
         s ) echo "Such green. Much bad. Go back. SCHTAP." ;;
@@ -30,9 +32,8 @@ while true; do
         w ) echo "You attempt to go west, but ALL YOU SEE IS GREEN." ;;
 		u ) echo "You think about 'using' green, but realise it's not legal in this country." ;;
 		h ) echo "You curl yourself up into a ball and rock back and forth." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save and quit.";;
     esac
 done
 
-esac
 exit

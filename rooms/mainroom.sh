@@ -1,4 +1,5 @@
 #!/bin/bash
+. "$(dirname "$0")/common.sh"
 clear
 
 # This is a repeat of the opening room in the start.sh file - if the player
@@ -27,6 +28,7 @@ echo "What would you like to do?"
 # And the room logic once again.
 while true; do
     read -p "> " nsewuh
+    bv_global "$nsewuh" && continue
     case $nsewuh in
         n ) ./white.sh
             exit ;;
@@ -38,9 +40,8 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, save and quit.";;
     esac
 done
 
-esac
 exit
