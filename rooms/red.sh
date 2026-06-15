@@ -30,7 +30,16 @@ while true; do
             exit ;;
 		u ) echo "You sit in the comfortable chair. It's like sitting on a cloud." ;;
 		h ) echo "You give yourself a hug, hoping that the books won't judge you." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		i|inventory )
+			if [ -s ../logic/inventory.ben ]; then
+				echo "You check your backpack. You are carrying:"
+				while IFS= read -r item; do
+					echo "  - $item"
+				done <../logic/inventory.ben
+			else
+				echo "Your backpack is empty."
+			fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

@@ -7,6 +7,7 @@ clear
 # First off, let us reset the game logic. Use this as an example.
 
 sed -i='' 's/on/off/' ../logic/leverlogic.ben
+> ../logic/inventory.ben
 
 # Who doen't love ASCII text, right?
 # Next up, let's initialise the Title Art
@@ -61,9 +62,18 @@ while true; do
         	exit ;;
         w ) ./green.sh
         	exit ;;
-		u ) echo "There's nothing you can use right here." ;;     # Something to say? You can also just echo.
+		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		i|inventory )
+			if [ -s ../logic/inventory.ben ]; then
+				echo "You check your backpack. You are carrying:"
+				while IFS= read -r item; do
+					echo "  - $item"
+				done <../logic/inventory.ben
+			else
+				echo "Your backpack is empty."
+			fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

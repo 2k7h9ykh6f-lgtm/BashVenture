@@ -17,6 +17,13 @@ echo "sat on a desk in the middle of it. Is that... YES!"
 echo "Steam is installed, and it looks like the entire library of"
 echo "games is installed! This is one epic gaming rig."
 echo
+
+if grep -qF "access card" ../logic/inventory.ben 2>/dev/null; then
+    :
+else
+    echo "You also spot a small access card sitting next to the keyboard."
+fi
+echo
 echo "The only way out is east, back the way you came... but..."
 echo "shiny. Maybe it'd be rude NOT to sit down and game a little."
 echo
@@ -30,28 +37,43 @@ while true; do
         w ) ./kroo2.sh
             exit ;;
         e ) echo "You were going to go east, then you took a wall to the face." ;;
-		u ) echo
-            echo "You sit and game. And game. And game. You forget about time,"
-            echo "and food, and people. You realise that you cannot get up. You can't"
-            echo "move. You are stuck to the chair."
-            echo
-            sleep 4
-            echo "Days go by. Weeks. You've played game after game, but..."
-            echo
-            echo "Your body is giving up. With your final breath you come to realise that"
-            echo "you cannot live on gamerpoints alone. You close your eyes for the last time."
-            sleep 4
-            echo
-            echo
-            echo "YOU ARE DEAD."
-            echo
-            read -p "Press [ENTER] to try again..."
-            ./mainroom.sh
-            exit
-
+		u ) if grep -qF "access card" ../logic/inventory.ben 2>/dev/null; then
+                echo
+                echo "You sit and game. And game. And game. You forget about time,"
+                echo "and food, and people. You realise that you cannot get up. You can't"
+                echo "move. You are stuck to the chair."
+                echo
+                sleep 4
+                echo "Days go by. Weeks. You've played game after game, but..."
+                echo
+                echo "Your body is giving up. With your final breath you come to realise that"
+                echo "you cannot live on gamerpoints alone. You close your eyes for the last time."
+                sleep 4
+                echo
+                echo
+                echo "YOU ARE DEAD."
+                echo
+                read -p "Press [ENTER] to try again..."
+                ./mainroom.sh
+                exit
+            else
+                echo "You grab the access card from beside the keyboard before"
+                echo "you're tempted to sit down. Smart move - that gaming rig"
+                echo "looks dangerously addictive."
+                echo "access card" >> ../logic/inventory.ben
+            fi
         ;;
 		h ) echo "You hug the computer. Nerd." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		i|inventory )
+			if [ -s ../logic/inventory.ben ]; then
+				echo "You check your backpack. You are carrying:"
+				while IFS= read -r item; do
+					echo "  - $item"
+				done <../logic/inventory.ben
+			else
+				echo "Your backpack is empty."
+			fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

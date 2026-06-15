@@ -25,7 +25,14 @@ leverstate=`cat ../logic/leverlogic.ben`
             else
                 echo "There's a delecately carved statue at the end of the room."
                 echo "It's a kitten, hewn from beautiful white marble."
-            fi 
+            fi
+
+if grep -qF "statue fragment" ../logic/inventory.ben 2>/dev/null; then
+    :
+else
+    echo
+    echo "You notice a small fragment of white marble lying on the floor near the statue."
+fi
 
 echo
 echo "The only exit is south, back the way you came."
@@ -42,16 +49,31 @@ while true; do
             exit ;;
         e ) echo "No can do. There's a wall there." ;;
         w ) echo "Seriously? Though the wall? Sorry, I can't do that." ;;
-		u ) echo "You try to use the statue. It feels weird, so you stop." ;;
+		u ) if grep -qF "statue fragment" ../logic/inventory.ben 2>/dev/null; then
+                echo "You already picked up the statue fragment."
+            else
+                echo "You pick up the white marble statue fragment. It's cold to the touch,"
+                echo "and fits neatly in your pocket."
+                echo "statue fragment" >> ../logic/inventory.ben
+            fi ;;
 		h ) leverstate=`cat ../logic/leverlogic.ben`
             if [ "$leverstate" = "on" ]; then
                 ./kroo.sh
                 exit
             else
                 echo "You hug the statue. It seems to vibrate a little. Weird."
-            fi 
+            fi
             ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		i|inventory )
+			if [ -s ../logic/inventory.ben ]; then
+				echo "You check your backpack. You are carrying:"
+				while IFS= read -r item; do
+					echo "  - $item"
+				done <../logic/inventory.ben
+			else
+				echo "Your backpack is empty."
+			fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

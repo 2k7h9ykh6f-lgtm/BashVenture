@@ -51,7 +51,16 @@ while true; do
 
 
 		h ) echo "You hug yourself, and hope nobody is watching." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		i|inventory )
+			if [ -s ../logic/inventory.ben ]; then
+				echo "You check your backpack. You are carrying:"
+				while IFS= read -r item; do
+					echo "  - $item"
+				done <../logic/inventory.ben
+			else
+				echo "Your backpack is empty."
+			fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

@@ -6,6 +6,7 @@ clear
 
 # Let's reset the lever, now that we're done with it.
 sed -i='' 's/on/off/' ../logic/leverlogic.ben
+> ../logic/inventory.ben
 
 # Initialise the Title Art
 file1="../art/titleart.ben"

@@ -45,10 +45,29 @@ while true; do
         s ) echo "You take a look at the decor of the room. It's pretty nice." ;;
         e ) echo "There's a curtain - but no window behind it. How odd." ;;
         w ) echo "WHO ARE THESE PEOPLE?!" ;;
-		u ) ./end.sh
-            exit ;;
+		u ) if grep -qF "access card" ../logic/inventory.ben 2>/dev/null; then
+                echo "You slide the access card through a hidden slot near the rainbow pill."
+                echo "A secret panel slides open, revealing a glowing portal."
+                echo "You step through..."
+                sleep 3
+                ./end.sh
+                exit
+            else
+                echo "You look at the rainbow pill. Something tells you this isn't"
+                echo "the way out. There must be a hidden exit somewhere..."
+                echo "Maybe you need some kind of card or key."
+            fi ;;
 		h ) echo "You hug the person next to you. He feels cold, and doesn't move." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+		i|inventory )
+			if [ -s ../logic/inventory.ben ]; then
+				echo "You check your backpack. You are carrying:"
+				while IFS= read -r item; do
+					echo "  - $item"
+				done <../logic/inventory.ben
+			else
+				echo "Your backpack is empty."
+			fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 
