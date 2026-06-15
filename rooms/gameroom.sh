@@ -16,6 +16,7 @@ echo "This room is small, but has a pretty sweet looking computer"
 echo "sat on a desk in the middle of it. Is that... YES!"
 echo "Steam is installed, and it looks like the entire library of"
 echo "games is installed! This is one epic gaming rig."
+echo "Tucked beside the keyboard, you notice a plastic access card."
 echo
 echo "The only way out is east, back the way you came... but..."
 echo "shiny. Maybe it'd be rude NOT to sit down and game a little."
@@ -51,7 +52,20 @@ while true; do
 
         ;;
 		h ) echo "You hug the computer. Nerd." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        t ) if grep -q '^access card$' ../logic/inventory.ben 2>/dev/null; then
+                echo "You already have the access card."
+            else
+                echo "access card" >> ../logic/inventory.ben
+                echo "You palm the plastic access card and slip it into your pocket."
+            fi ;;
+        i | inventory )
+            echo "You are carrying:"
+            if [ -s ../logic/inventory.ben ]; then
+                while IFS= read -r item; do echo " - $item"; done < ../logic/inventory.ben
+            else
+                echo " - nothing"
+            fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, i and t.";;
     esac
 done
 

@@ -45,10 +45,23 @@ while true; do
         s ) echo "You take a look at the decor of the room. It's pretty nice." ;;
         e ) echo "There's a curtain - but no window behind it. How odd." ;;
         w ) echo "WHO ARE THESE PEOPLE?!" ;;
-		u ) ./end.sh
-            exit ;;
+		u ) if grep -q '^access card$' ../logic/inventory.ben 2>/dev/null; then
+                ./end.sh
+                exit
+            else
+                echo "You reach for the rainbow pill, but a small glass dome stays"
+                echo "locked over it. An electronic voice murmurs:"
+                echo "\"Access denied. Please present a valid access card.\""
+            fi ;;
 		h ) echo "You hug the person next to you. He feels cold, and doesn't move." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        i | inventory )
+            echo "You are carrying:"
+            if [ -s ../logic/inventory.ben ]; then
+                while IFS= read -r item; do echo " - $item"; done < ../logic/inventory.ben
+            else
+                echo " - nothing"
+            fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

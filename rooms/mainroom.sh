@@ -38,7 +38,14 @@ while true; do
             exit ;;
 		u ) echo "There's nothing you can use right here." ;;
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        i | inventory )
+            echo "You are carrying:"
+            if [ -s ../logic/inventory.ben ]; then
+                while IFS= read -r item; do echo " - $item"; done < ../logic/inventory.ben
+            else
+                echo " - nothing"
+            fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

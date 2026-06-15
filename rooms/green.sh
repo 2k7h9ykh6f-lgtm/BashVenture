@@ -30,7 +30,14 @@ while true; do
         w ) echo "You attempt to go west, but ALL YOU SEE IS GREEN." ;;
 		u ) echo "You think about 'using' green, but realise it's not legal in this country." ;;
 		h ) echo "You curl yourself up into a ball and rock back and forth." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        i | inventory )
+            echo "You are carrying:"
+            if [ -s ../logic/inventory.ben ]; then
+                while IFS= read -r item; do echo " - $item"; done < ../logic/inventory.ben
+            else
+                echo " - nothing"
+            fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 

@@ -7,6 +7,9 @@ clear
 # Let's reset the lever, now that we're done with it.
 sed -i='' 's/on/off/' ../logic/leverlogic.ben
 
+# Empty the player's inventory now that the adventure is over.
+> ../logic/inventory.ben
+
 # Initialise the Title Art
 file1="../art/titleart.ben"
 while IFS= read -r line

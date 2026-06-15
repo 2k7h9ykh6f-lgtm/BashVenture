@@ -42,7 +42,20 @@ while true; do
             exit ;;
         e ) echo "No can do. There's a wall there." ;;
         w ) echo "Seriously? Though the wall? Sorry, I can't do that." ;;
-		u ) echo "You try to use the statue. It feels weird, so you stop." ;;
+		u ) if grep -q '^statue fragment$' ../logic/inventory.ben 2>/dev/null; then
+                echo "You press your marble fragment to the statue. The two hum in"
+                echo "resonance for a moment, then fall quiet. Curious."
+            else
+                echo "You try to use the statue. It feels weird, so you stop."
+                echo "Although... a loose chip of marble looks like it might come free."
+            fi ;;
+        t ) if grep -q '^statue fragment$' ../logic/inventory.ben 2>/dev/null; then
+                echo "You've already chipped a fragment from the statue."
+            else
+                echo "statue fragment" >> ../logic/inventory.ben
+                echo "You carefully break off a small sliver of the white marble."
+                echo "It hums faintly in your hand. You pocket it."
+            fi ;;
 		h ) leverstate=`cat ../logic/leverlogic.ben`
             if [ "$leverstate" = "on" ]; then
                 ./kroo.sh
@@ -51,7 +64,14 @@ while true; do
                 echo "You hug the statue. It seems to vibrate a little. Weird."
             fi 
             ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        i | inventory )
+            echo "You are carrying:"
+            if [ -s ../logic/inventory.ben ]; then
+                while IFS= read -r item; do echo " - $item"; done < ../logic/inventory.ben
+            else
+                echo " - nothing"
+            fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h, i and t.";;
     esac
 done
 

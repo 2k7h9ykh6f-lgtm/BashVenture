@@ -8,6 +8,9 @@ clear
 
 sed -i='' 's/on/off/' ../logic/leverlogic.ben
 
+# Reset the player's inventory so every new game starts with an empty bag.
+> ../logic/inventory.ben
+
 # Who doen't love ASCII text, right?
 # Next up, let's initialise the Title Art
 file1="../art/titleart.ben"
@@ -63,7 +66,14 @@ while true; do
         	exit ;;
 		u ) echo "There's nothing you can use right here." ;;     # Something to say? You can also just echo.
 		h ) echo "You give yourself a quick hug. It's not very satisfying." ;;
-        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u and h.";;
+        i | inventory )
+            echo "You are carrying:"
+            if [ -s ../logic/inventory.ben ]; then
+                while IFS= read -r item; do echo " - $item"; done < ../logic/inventory.ben
+            else
+                echo " - nothing"
+            fi ;;
+        * ) echo "I'm sorry, I don't understand you. Commands are: n, e, s, w, u, h and i.";;
     esac
 done
 
